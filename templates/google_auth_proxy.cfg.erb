@@ -1,0 +1,63 @@
+## Google Auth Proxy Config file
+## https://github.com/bitly/google_auth_proxy
+
+<% if @http_address -%>
+## <addr>:<port> to listen on for HTTP clients
+http_address = "<%= @http_address %>:<%= @http_port %>"
+<% end -%>
+
+<% if @redirect_url -%>
+## the OAuth Redirect URL.
+redirect_url = "<%= @redirect_url %>"
+<% end -%>
+
+<% if @upstreams -%>
+## the http url(s) of the upstream endpoint. If multiple, routing is based on path
+upstreams = [
+<% @upstreams.each do |upstr| -%>
+  "<%= upstr %>",
+<% end -%>
+]
+<% end -%>
+
+<% if @pass_basic_auth == true -%>
+## pass HTTP Basic Auth, X-Forwarded-User and X-Forwarded-Email information to upstream
+pass_basic_auth = true
+<% end -%>
+
+<% if @google_apps_domains -%>
+## Google Apps Domains to allow authentication for
+google_apps_domains = [
+<% @google_apps_domains.each do |appdom| -%>
+  "<%= appdom %>",
+<% end -%>
+]
+<% end -%>
+
+<% if @client_id -%>
+## The Google OAuth Client ID, Secret
+client_id = "<%= @client_id %>"
+client_secret = "<%= @client_secret %>"
+<% end -%>
+
+<% if @authenticated_emails_file -%>
+## Authenticated Email Addresses File (one email per line)
+authenticated_emails_file = "<%= @authenticated_emails_file %>"
+<% end -%>
+
+<% if @htpasswd_file -%>
+## Htpasswd File (optional)
+## Additionally authenticate against a htpasswd file. Entries must be created with "htpasswd -s" for SHA encryption
+## enabling exposes a username/login signin form
+htpasswd_file = "<%= @htpasswd_file %>"
+<% end -%>
+
+## Cookie Settings
+## Secret - the seed string for secure cookies
+## Domain - optional cookie domain to force cookies to (ie: .yourcompany.com)
+## Expire - expire timeframe for cookie
+<% if @cookie_secret %>cookie_secret = "<%= @cookie_secret %>"<% end %>
+<% if @cookie_domain %>cookie_domain = "<%= @cookie_domain %>"<% end %>
+<% if @cookie_expire %>cookie_expire = "<%= @cookie_expire %>"<% end %>
+<% if @cookie_https_only == true %>cookie_https_only = true<% end %>
+

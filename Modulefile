@@ -1,0 +1,10 @@
+name          'puppet-google_auth_proxy'
+version       '0.1.0'
+source        'https://github.com/adamcrews/puppet-google_auth_proxy.git'
+author        'adamcrews'
+license       'Apache 2.0'
+summary       'Install the google_auth_proxy from the Bitly eng team.'
+description   ''
+project_page  'https://github.com/adamcrews/puppet-google_auth_proxy'
+
+dependency 'puppetlabs/stdlib'

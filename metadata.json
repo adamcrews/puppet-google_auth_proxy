@@ -1,0 +1,20 @@
+{
+  "name": "puppet-google_auth_proxy",
+  "version": "0.1.0",
+  "author": "adamcrews",
+  "summary": "Install the google_auth_proxy from the Bitly eng team.",
+  "license": "Apache 2.0",
+  "source": "https://github.com/adamcrews/puppet-google_auth_proxy.git",
+  "project_page": "https://github.com/adamcrews/puppet-google_auth_proxy",
+  "issues_url": "https://github.com/adamcrews/puppet-google_auth_proxy/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_requirement": ">= 4.0.0"
+    },
+    {
+      "name": "nanliu-staging",
+      "version_requirement": ">= 1.0.2"
+    }
+  ]
+}

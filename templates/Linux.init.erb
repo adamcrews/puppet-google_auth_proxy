@@ -1,0 +1,106 @@
+#!/bin/bash
+#
+# <%= @service_name %>   Start up the <%= @service_name %> server daemon
+#
+# chkconfig: 2345 80 20
+# description: <%= @service_name %> is a proxy to authenticate using \
+#              Google OAuth2.
+#
+# processname: <%= @service_name %>
+# config: <%= @config_file %>
+# pidfile: /var/run/<%= @service_name %>.pid
+# logfile: /var/log/<%= @service_name %>
+#
+### BEGIN INIT INFO
+# Provides: <%= @service_name %>
+# Required-Start: $local_fs $network $syslog
+# Required-Stop: $local_fs $syslog
+# Should-Start: $syslog
+# Should-Stop: $network $syslog
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Start up the <%= @service_name %> server daemon
+# Description: <%= @service_name %> is a proxy to authenticate using
+#              Google OAuth2.
+### END INIT INFO
+
+# source function library
+. /etc/rc.d/init.d/functions
+
+RETVAL=0
+PIDFILE=/var/run/<%= @service_name %>.pid
+LOGFILE=/var/log/<%= @service_name %>
+
+prog=<%= @service_name %>
+exec=<%= @bin_file %>
+lockfile=/var/lock/subsys/$prog
+
+# Source config
+if [ -f /etc/sysconfig/$prog ]; then
+  . /etc/sysconfig/$prog
+fi
+
+start () {
+  [ -x $exec ] || exit 5
+  [ -f <%= @config_file %> ] || exit 6
+
+  echo -n $"Starting $prog: "
+  touch $LOGFILE && chown <%= @auth_user %> $LOGFILE && chmod 660 $LOGFILE &&
+  daemon --user=<%= @auth_user %> "$exec -config=<%= @config_file %> > $LOGFILE 2>&1 &"
+  RETVAL=$?
+  echo
+  if [ $RETVAL -eq 0 ]; then
+    touch $lockfile
+    /sbin/pidof $prog > $PIDFILE
+    if [ ! -s $PIDFILE ]; then
+      RETVAL=1
+    fi
+  fi
+  return $RETVAL
+}
+
+stop () {
+  echo -n $"Shutting down $prog: "
+  killproc $prog
+  RETVAL=$?
+  echo
+  if [ $RETVAL -eq 0 ]; then
+    rm -f $lockfile
+    rm -f $PIDFILE
+  fi
+  return $RETVAL
+}
+
+# See how wer were called.
+case "$1" in
+  start)
+    start
+    RETVAL=$?
+    ;;
+  stop)
+    stop
+    RETVAL=$?
+    ;;
+  status)
+    status $prog
+    RETVAL=$?
+    ;;
+  restart | reload | force-reload)
+    stop
+    start
+    RETVAL=$?
+    ;;
+  condrestart | try-restart)
+    if [ -f $lockfile ]; then
+      stop
+      start -w
+      RETVAL=$?
+    fi
+    ;;
+  *)
+    echo $"Usage: $0 {start|stop|restart|reload|force-reload|condrestart|try-restart}"
+    RETVAL=2
+    ;;
+esac
+
+exit $RETVAL

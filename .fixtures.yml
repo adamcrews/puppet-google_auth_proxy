@@ -1,0 +1,10 @@
+fixtures:
+  forge_modules:
+    stdlib:
+      repo: 'puppetlabs/stdlib'
+      ref: '4.4.0'
+    staging:
+      repo: 'nanliu/staging'
+      ref: '1.0.2'
+  symlinks:
+    google_auth_proxy: "#{source_dir}"

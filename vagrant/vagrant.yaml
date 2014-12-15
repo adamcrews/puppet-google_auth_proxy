@@ -1,0 +1,6 @@
+---
+google_auth_proxy::client_id: 'asdf'
+google_auth_proxy::client_secret: 'asdf'
+google_auth_proxy::cookie_domain: 'localdomain'
+google_auth_proxy::upstreams:
+  - 'http://sdfasdf/'
